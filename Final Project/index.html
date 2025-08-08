@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Extravaganza</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.5rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #4a90e2;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 800px;
+        }
+        footer {
+            background: #222;
+            color: #ccc;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .pizza-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .pizza-gallery img {
+            width: 220px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>!!Everything Pizza!!</h1>
+        <p>A Web Dev Project</p>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dough.html">Pizza Dough Recipe</a>
+        <a href="weather2.html">Check Your Pizza Weather</a>
+        
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Welcome!</h2>
+            <p>I love Pizza, and I hope you do too.</p>
+            <p>Pizza is a delicious dish that originated in Italy and has become popular worldwide. 
+               It's made with a round, flat base of leavened wheat-based dough topped with tomatoes, cheese, and often various other ingredients 
+               (such as anchovies, olives, vegetables, meat, etc.), which is then baked at a high temperature, traditionally in a wood-fired oven.</p>
+
+            <p>Whether you prefer a classic Margherita, a meat feast, or a veggie supreme, there's a pizza out there for everyone!</p>   
+
+            <div class="pizza-gallery">
+                <img src="media/pizza1.jpg" alt="Pizza 1">
+                <img src="media/pizza2.jpg" alt="Pizza 2">
+                <img src="media/pizza3.jpg" alt="Pizza 3">
+            </div>
+        </div>
+    </div>
+    <footer>
+        
+        <p>A project for EDCI5003</p>
+        <p>Created by Kevin Feal-Staub</p>
+    </footer>
+</body>
+</html>

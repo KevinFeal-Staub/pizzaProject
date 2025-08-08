@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Dough Recipe</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.5rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #4a90e2;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 800px;
+        }
+        footer {
+            background: #222;
+            color: #ccc;
+            text-align: center;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pizza Dough Recipe</h1>
+        <p>Make the perfect base for your pizza!</p>
+    </header>
+    <nav>
+        <<a href="index.html">Home</a>
+        <a href="dough.html">Pizza Dough Recipe</a>
+        <a href="weather2.html">Check Your Pizza Weather</a>
+    </nav>
+    <div class="container">
+        <div class="content" style="display: flex; gap: 2rem; align-items: flex-start;">
+            <div style="flex: 2;">
+                <h2>Classic Pizza Dough</h2>
+                <form id="pizzaForm">
+                    <label for="numPizzas">How many 12 inch pizzas do you wish to make?</label>
+                    <input type="number" id="numPizzas" name="numPizzas" min="1" value="1" required>
+                    <button type="submit">Submit</button>
+                </form>
+                <div id="ingredients-list"></div>
+                <p id="procedure"></p>
+                <script>
+                    let n = 1;
+                    document.getElementById('pizzaForm').addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        n = parseInt(document.getElementById('numPizzas').value, 10);
+
+                        let tot = 250 * n;
+                        let flour = tot / 1.55;
+                        let water = flour * 0.55;
+                        let yeast = Math.floor(1.5 * n);
+                        let salt = n;
+                        let oil = n * 5;
+
+                        // Round flour and water to the nearest ten grams
+                        flour = Math.round(flour / 10) * 10;
+                        water = Math.round(water / 10) * 10;
+
+                        // Print the formatted list
+                        document.getElementById('ingredients-list').innerHTML = `
+                            <h3>Ingredients for ${n} pizza${n > 1 ? 's' : ''}:</h3>
+                            <ul>
+                                <li><strong>${flour}</strong> grams flour</li>
+                                <li><strong>${water}</strong> grams water</li>
+                                <li><strong>${yeast}</strong> grams yeast</li>
+                                <li><strong>${salt}</strong> grams salt</li>
+                                <li><strong>${oil}</strong> grams olive oil</li>
+                            </ul>
+                        `;
+
+                        // Update the procedure steps
+                        document.getElementById('procedure').innerHTML = `
+                            <h3>Procedure</h3>
+                            <ol>
+                                <li>Combine all the ingredients in a large bowl.</li>
+                                <li>Make sure the water is only lukewarm.</li>
+                                <li>Knead until supple.</li>
+                                <li>Let rise until doubled.</li>
+                                <li>Scale into 250 gram portions for 12 inch pizzas.</li>
+                            </ol>
+                        `;
+                    });
+                </script>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: flex-end;">
+                <img src="media/dough.jpg" alt="Pizza" style="max-width: 250px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #eee;">
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Your Name. All rights reserved.
+    </footer>
+</body>
+</html>

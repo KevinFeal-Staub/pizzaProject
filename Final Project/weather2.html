@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Is the Weather Good for Pizza?</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.5rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #4a90e2;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 800px;
+        }
+        form {
+            margin-bottom: 1.5rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: none;
+            background: #4a90e2;
+            color: white;
+            cursor: pointer;
+        }
+        #weather {
+            background: #fff;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            max-width: 400px;
+        }
+        footer {
+            background: #222;
+            color: #ccc;
+            text-align: center;
+            padding: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Is the weather good for Pizza?</h1>
+        <p>Get the current weather for your ZIP code using the National Weather Service</p>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dough.html">Pizza Dough Recipe</a>
+        <a href="weather2.html">Check Your Pizza Weather</a>
+    </nav>
+    <p id="pizza-message">See if the weather is good for pizza! </p>
+    <div class="container">
+        <div class="content">
+            <form id="zipForm">
+                <label for="zip">Enter your ZIP code:</label>
+                <input type="text" id="zip" name="zip" maxlength="5" required pattern="\d{5}">
+                <button type="submit">Get Weather</button>
+            </form>
+            <div id="weather"></div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Your Name. All rights reserved.
+    </footer>
+    <script>
+        // Helper: Get lat/lon from ZIP using Zippopotam.us
+        async function getLatLonFromZip(zip) {
+            const resp = await fetch(`https://api.zippopotam.us/us/${zip}`);
+            if (!resp.ok) throw new Error("Invalid ZIP code");
+            const data = await resp.json();
+            return {
+                lat: parseFloat(data.places[0].latitude),
+                lon: parseFloat(data.places[0].longitude)
+            };
+        }
+
+        // Helper: Get NWS gridpoint from lat/lon
+        async function getNWSGridpoint(lat, lon) {
+            const resp = await fetch(`https://api.weather.gov/points/${lat},${lon}`);
+            if (!resp.ok) throw new Error("NWS gridpoint lookup failed");
+            return await resp.json();
+        }
+
+        // Helper: Get current weather from NWS forecast office
+        async function getNWSCurrentWeather(forecastUrl) {
+            const resp = await fetch(forecastUrl);
+            if (!resp.ok) throw new Error("NWS forecast fetch failed");
+            return await resp.json();
+        }
+
+        document.getElementById('zipForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const zip = document.getElementById('zip').value;
+            const weatherDiv = document.getElementById('weather');
+            weatherDiv.textContent = 'Loading...';
+
+            try {
+                // 1. Get lat/lon from ZIP
+                const { lat, lon } = await getLatLonFromZip(zip);
+
+                // 2. Get NWS gridpoint info
+                const gridData = await getNWSGridpoint(lat, lon);
+
+                // 3. Get current forecast (periods[0] is current)
+                const forecastUrl = gridData.properties.forecast;
+                const forecastData = await getNWSCurrentWeather(forecastUrl);
+
+                const period = forecastData.properties.periods[0];
+
+                weatherDiv.innerHTML = `
+                    <h2>Weather for ${gridData.properties.relativeLocation.properties.city}, ${gridData.properties.relativeLocation.properties.state}</h2>
+                    <p><strong>${period.name}:</strong> ${period.detailedForecast}</p>
+                    <p><strong>Temperature:</strong> ${period.temperature} ${period.temperatureUnit}</p>
+                    <img src="${period.icon}" alt="Weather icon">
+                `;
+
+                // Update the pizza message below the weather
+                document.getElementById('pizza-message').textContent =
+                    "The weather is always good for Pizza!  Pizza is awesome rain or shine!!";
+            } catch (err) {
+                weatherDiv.textContent = 'Could not fetch weather. Please check your ZIP code and try again.';
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
